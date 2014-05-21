@@ -22,10 +22,9 @@ try:
 except ImportError:
     from distutils.core import setup
 
-from pygeoip import __version__
 
 setup(name='pygeoip',
-      version=__version__,
+      version='0.1.6',
       description='Pure Python GeoIP API',
       author='Jennifer Ennis',
       author_email='zaylea@gmail.com',

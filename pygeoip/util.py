@@ -1,6 +1,10 @@
-# -*- coding: utf-8 -*-
 """
-Copyright (c) 2010-2014 Jennifer Ennis, William Tisäter.
+Misc. utility functions. It is part of the pygeoip package.
+
+@author: Jennifer Ennis <zaylea at gmail dot com>
+
+@license:
+Copyright(C) 2004 MaxMind LLC
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -16,33 +20,16 @@ You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 """
 
-import socket
-import binascii
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO, BytesIO
-
-from pygeoip import const
-
-
 def ip2long(ip):
     """
-    Wrapper function for IPv4 and IPv6 converters.
-
-    :arg ip: IPv4 or IPv6 address
+    Convert a IPv4 address into a 32-bit integer.
+    
+    @param ip: quad-dotted IPv4 address
+    @type ip: str
+    @return: network byte order 32-bit integer
+    @rtype: int
     """
-    try:
-        return int(binascii.hexlify(socket.inet_aton(ip)), 16)
-    except socket.error:
-        return int(binascii.hexlify(socket.inet_pton(socket.AF_INET6, ip)), 16)
+    ip_array = ip.split('.')
+    ip_long = long(ip_array[0]) * 16777216 + long(ip_array[1]) * 65536 + long(ip_array[2]) * 256 + long(ip_array[3])
+    return ip_long  
 
-
-def str2fp(data):
-    """
-    Convert bytes data to file handle object (StringIO or BytesIO).
-
-    :arg data: String data to transform
-    """
-    return BytesIO(bytearray(data, const.ENCODING)) if const.PY3 else StringIO(data)
